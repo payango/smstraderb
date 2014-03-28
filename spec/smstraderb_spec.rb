@@ -42,7 +42,7 @@ describe SMSTradeRB do
   describe "from option" do
     context "route set to :gold" do
       it "allows the from option to be set" do
-        SMSTradeRB.new(:route => :gold, :from => '123456').from.should == '123456'
+        SMSTradeRB.new(:route => :gold, :from => '123456789101').from.should == '123456789101'
       end
     end
 
@@ -58,9 +58,9 @@ describe SMSTradeRB do
       }.to raise_error(SMSTradeRB::InvalidOption)
     end
 
-    it "verifies the length (max 11)" do
+    it "verifies the length (max 16)" do
       expect {
-        SMSTradeRB.new(:route => :gold, :from => 'ab cd sdfses')
+        SMSTradeRB.new(:route => :gold, :from => 'ab cd sdfsesj1234')
       }.to raise_error(SMSTradeRB::InvalidFormat)
     end
   end

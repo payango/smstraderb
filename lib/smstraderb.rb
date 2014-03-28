@@ -20,7 +20,7 @@ class SMSTradeRB
     @debug = options[:debug] ? 1 : 0
     @dlr = options[:dlr] || 0
     check_from_allowed(@from, @route)
-    check_value_length(@from, 11) if @from
+    check_value_length(@from, 16) if @from
 
     @message = escape(@message)
     @from = escape(@from)
@@ -84,7 +84,7 @@ class SMSTradeRB
     end
 
     def check_value_length(value, limit)
-      if (bytesize(value) > 11)
+      if (bytesize(value) > limit)
         raise SMSTradeRB::InvalidFormat, "Value '#{value}' too long. (limit: #{limit})"
       end
     end
