@@ -95,6 +95,16 @@ describe SMSTradeRB do
     it "has a charset attribute" do
       SMSTradeRB.new.charset.should_not be_nil
     end
+
+    describe "concat" do
+      it "defaults to false" do
+        SMSTradeRB.new.concat.should be(0)
+      end
+
+      it "it returns the setted value" do
+        SMSTradeRB.new(:concat => true).concat.should be(1)
+      end
+    end
   end
 
   describe "#message" do
@@ -128,6 +138,16 @@ describe SMSTradeRB do
       end
 
       app.params['to'].should == '+1234567'
+    end
+
+    it "sends the concat parameter" do
+      app = SMSTradeRB::Server.new(:code => 999)
+      Artifice.activate_with(app) do
+        sms = SMSTradeRB.new(:route => :basic, :key => 'mykey', :debug => false, :concat => true)
+        sms.send(:to => '+12 34-567', :message => 'my message $foo+bar')
+      end
+
+      app.params['concat'].should == "1"
     end
 
     context "success" do

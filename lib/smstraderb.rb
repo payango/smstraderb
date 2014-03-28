@@ -7,7 +7,7 @@ class SMSTradeRB
   class InvalidOption < Exception; end
   class InvalidFormat < Exception; end
 
-  attr_reader :key, :message, :to, :from, :route, :debug, :charset, :dlr
+  attr_reader :key, :message, :to, :from, :route, :debug, :charset, :dlr, :concat
 
   def initialize(options = {})
     @charset = 'UTF-8'
@@ -19,6 +19,7 @@ class SMSTradeRB
     @from = options[:from]
     @debug = options[:debug] ? 1 : 0
     @dlr = options[:dlr] || 0
+    @concat = options[:concat] ? 1 : 0
     check_from_allowed(@from, @route)
     check_value_length(@from, 16) if @from
 
@@ -51,7 +52,8 @@ class SMSTradeRB
         :from => from,
         :debug => debug,
         :charset => charset,
-        :dlr => dlr
+        :dlr => dlr,
+        :concat => concat
       }.map do |key, value|
         [key, value].join('=') if value
       end.compact
